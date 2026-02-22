@@ -7,15 +7,38 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+/// ✅ Changed to StatefulWidget to control theme
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  /// 🌙 Dark mode state
+  bool isDark = false;
+
+  /// Toggle function
+  void toggleTheme() {
+    setState(() {
+      isDark = !isDark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => CartProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider())
+      ],
       child: MaterialApp(
         title: 'Shopping App',
+
+        /// 🌙 Theme switching
+        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+
+        /// ☀️ Light Theme (YOUR ORIGINAL THEME)
         theme: ThemeData(
           fontFamily: 'Lato',
           colorScheme: ColorScheme.fromSeed(
@@ -36,7 +59,12 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const HomePage(),
+
+        /// 🌙 Dark Theme
+        darkTheme: ThemeData.dark(useMaterial3: true),
+
+        /// ✅ Passing toggle function to HomePage
+        home: HomePage(toggleTheme: toggleTheme),
       ),
     );
   }

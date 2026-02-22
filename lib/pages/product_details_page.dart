@@ -11,6 +11,7 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  bool isFavorite = false;
   int selectedSize = 0;
 
   void onTap() {
@@ -36,7 +37,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Details')),
+      appBar: AppBar(
+        title: const Text('Details'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Text(
